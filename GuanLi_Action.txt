@@ -1,0 +1,307 @@
+package action;
+
+import java.util.Iterator;
+import java.util.List;
+
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+import org.junit.Test;
+
+import com.model.*;
+
+
+public class GuanLi_Action{
+@Test
+
+	public void add(int id,String userName,String password){
+		SessionFactory sf=new Configuration().configure().buildSessionFactory();
+		Session session=sf.openSession();
+		session.beginTransaction();
+		GuanLi s = new GuanLi();
+		s.setId(id);
+		s.setUserName(userName);
+        s.setPassword(password);
+		session.save(s);
+		session.getTransaction().commit();
+		sf.close();
+	}
+@Test
+	public void update(int id,String userName,String password){
+		SessionFactory sf=new Configuration().configure().buildSessionFactory();
+		Session session=sf.openSession();
+		session.beginTransaction();
+		GuanLi s=new GuanLi();
+		s.setId(id);
+		s.setUserName(userName);
+		s.setPassword(password);
+		session.update(s);
+		session.getTransaction().commit();
+		sf.close();
+	}
+@Test
+	public void Query(){
+		SessionFactory sf=new Configuration().configure().buildSessionFactory();
+		Session session=sf.openSession();
+		session.beginTransaction();
+		Student s=(Student)session.get(Student.class,1);
+		//Student s=(Student)session.load(Student.class,1);
+		System.out.println(s.getUserName());
+		session.getTransaction().commit();
+		sf.close();
+	}
+@Test
+	public void delete(int id){
+		SessionFactory sf=new Configuration().configure().buildSessionFactory();
+		Session session=sf.openSession();
+		session.beginTransaction();
+		GuanLi s=(GuanLi)session.get(GuanLi.class,id);
+		//Student s=(Student)session.load(Student.class,1);
+		session.delete(s);
+		session.getTransaction().commit();
+		sf.close();
+	}
+
+@Test
+		public List alias(String userName){
+			Configuration config=new Configuration().configure();
+			SessionFactory sf=new Configuration().configure().buildSessionFactory();
+			Session session=sf.openSession();
+			session.clear();
+			session.beginTransaction();
+			String hql="from GuanLi as s where s.userName='"+userName+"'";
+			Query query=session.createQuery(hql);
+			List<Student> ss=query.list();
+			if(ss.size()>0){
+				return ss;
+			}
+			session.getTransaction().commit();
+			session.close();
+			sf.close();
+			return null;
+		}
+@Test
+        public List dynamic(){
+
+	        Configuration config=new Configuration().configure();
+	        SessionFactory sf=new Configuration().configure().buildSessionFactory();
+	        Session session=sf.openSession();
+	        session.clear();
+	        session.beginTransaction();
+	        String hql="select new GuanLi(s.username,s.password) from GuanLI as s";
+	        Query query=session.createQuery(hql);
+	        List<Student> ss=query.list();
+	        if(ss.size()>0){
+	        	return ss;
+	        }
+	        //for(Student s:ss){
+		   // System.out.println(s.getUsername());
+		   // System.out.println(s.getPassword());
+	       // }
+	        session.getTransaction().commit();
+	        session.close();
+	        sf.close();
+	        return null;
+}
+
+@Test
+		public boolean paramName(String userName,String password){
+			Configuration config=new Configuration().configure();
+			SessionFactory sf=new Configuration().configure().buildSessionFactory();
+			Session session=sf.openSession();
+			session.beginTransaction();
+			String hql="from GuanLi where username=:name and password=:word";
+			Query query=session.createQuery(hql);
+			query.setParameter("name",userName);
+			query.setParameter("word",password);
+			List<Student> ss=query.list();
+			if(ss.size()>0){
+				session.getTransaction().commit();
+				session.close();
+				sf.close();
+				return true;
+			}
+			
+			//for(Student s:ss){
+			//	System.out.println(s.getUsername()+" "+s.getPassword());
+			//}
+			
+			return false;
+		}
+public List guanLi_MoCha(String userName){
+	Configuration config=new Configuration().configure();
+	SessionFactory sf=new Configuration().configure().buildSessionFactory();
+	Session session=sf.openSession();
+	session.beginTransaction();
+	String hql="from GuanLi where username like ?  ";
+	Query query=session.createQuery(hql);查询
+	query.setParameter(0,"%"+userName+"%");更改
+	
+	List<GuanLi> ss=query.list();
+	if(ss.size()>0){
+		session.getTransaction().commit();
+		session.close();
+		sf.close();
+		return ss;
+	}
+	
+	//for(Student s:ss){
+	//	System.out.println(s.getUsername()+" "+s.getPassword());
+	//}
+	
+	return null;
+}
+public List guanLi_MoCha(String userName,int start,int chang){
+	Configuration config=new Configuration().configure();
+	SessionFactory sf=new Configuration().configure().buildSessionFactory();
+	Session session=sf.openSession();
+	session.beginTransaction();
+	String hql="from GuanLi where username like ?  ";
+	Query query=session.createQuery(hql);
+	query.setParameter(0,"%"+userName+"%");
+	query.setFirstResult(start);//从第几条开始显示
+	query.setMaxResults(start+chang);//显示多少条
+	List<GuanLi> ss=query.list();
+	if(ss!=null){
+		session.getTransaction().commit();
+		session.close();
+		sf.close();
+		return ss;
+	}
+	
+	//for(Student s:ss){
+	//	System.out.println(s.getUsername()+" "+s.getPassword());
+	//}
+	
+	return null;
+}
+public List guanLi_Cha(String userName){
+	Configuration config=new Configuration().configure();
+	SessionFactory sf=new Configuration().configure().buildSessionFactory();
+	Session session=sf.openSession();
+	session.beginTransaction();
+	String hql="from GuanLi where username=:name ";
+	Query query=session.createQuery(hql);
+	query.setParameter("name",userName);
+	
+	List<GuanLi> ss=query.list();
+	if(ss.size()>0){
+		session.getTransaction().commit();
+		session.close();
+		sf.close();
+		return ss;
+	}
+	
+	//for(Student s:ss){
+	//	System.out.println(s.getUsername()+" "+s.getPassword());
+	//}
+	
+	return null;
+}
+		@Test
+		public void paramLocation(){
+			Configuration config=new Configuration().configure();
+			SessionFactory sf=new Configuration().configure().buildSessionFactory();
+			Session session=sf.openSession();
+			session.beginTransaction();
+			String hql="from Student where username like ? and password like ? ";
+			Query query=session.createQuery(hql);
+			query.setParameter(0,"%A%");
+			query.setParameter(1,"%1%");
+			List<Student> ss=query.list();
+			for(Student s:ss){
+				System.out.println(s.getUserName()+" "+s.getPassword());
+			}
+			session.getTransaction().commit();
+			session.close();
+			sf.close();
+		}
+		@Test
+		public void portion(){
+		
+			Configuration config=new Configuration().configure();
+			SessionFactory sf=new Configuration().configure().buildSessionFactory();
+			Session session=sf.openSession();
+			session.clear();
+			session.beginTransaction();
+			String hql="select s.username,s.password,s. from Student as s";
+			Query query=session.createQuery(hql);
+			List<Object[]> list=query.list();
+			Iterator iter=list.iterator();
+			
+			while(iter.hasNext()){
+				Object[] obj=(Object[]) iter.next();
+				System.out.println(obj[0]+" "+obj[1]);
+			}
+			
+		}
+//		public int  count(){
+//			
+//			Configuration config=new Configuration().configure();
+//			SessionFactory sf=new Configuration().configure().buildSessionFactory();
+//			Session session=sf.openSession();
+//			session.clear();
+//			session.beginTransaction();
+//			String hql="select * from GuanLi ";
+//			Query query=session.createQuery(hql);
+//			List<GuanLi> list=query.list();
+//			session.getTransaction().commit();
+//			session.close();
+//			sf.close();
+//			if(list!=null&&list.size()!=0){
+//				return list.get(list.size()-1).getId();
+//			}
+//			return -1;
+//		}
+		@Test
+		public List pageQuery( String userName,int start ,int chang){
+		
+			Configuration config=new Configuration().configure();
+			SessionFactory sf=new Configuration().configure().buildSessionFactory();
+			Session session=sf.openSession();
+			session.clear();
+			session.beginTransaction();
+			String hql="from GuanLi where ";
+			Query query=session.createQuery(hql);
+			query.setFirstResult(start);//从第几条开始显示
+			query.setMaxResults(start+chang-1);//显示多少条
+			List<Student> ss=query.list();
+			session.getTransaction().commit();
+			session.close();
+			sf.close();
+			if(ss.size()>0){
+				return ss;
+			}
+			
+			return null;
+		}
+		public int count(){
+			
+			Configuration config=new Configuration().configure();
+			SessionFactory sf=new Configuration().configure().buildSessionFactory();
+			Session session=sf.openSession();
+			session.clear();
+			session.beginTransaction();
+			String hql="from GuanLi ";
+			Query query=session.createQuery(hql);
+			List<GuanLi> ss=query.list();
+			
+			session.getTransaction().commit();
+			session.close();
+			sf.close();
+		//	for(int i=0; i<=ss.size()-1; i++){
+		//		System.out.print(ss.get(i)+" ");
+			//}
+			if(ss!=null&&ss.size()>0){
+				return ss.get(ss.size()-1).getId();
+			}
+			return -1;
+			
+	
+		}
+
+
+
+	
+} 

@@ -1,0 +1,68 @@
+package project;
+import java.util.*;
+public class RoundRobin {
+	public static void main(String args[]){
+		Queue<Process> queue =new LinkedList<Process>();
+		Scanner in=new Scanner(System.in);
+		System.out.println("请输入周转的时间");
+		int q=in.nextInt();
+		System.out.println("请输入进程的数量");
+		int n=in.nextInt();
+		while(n-->0){
+			System.out.println("请输入第"+(int)(n+1)+"进程的到达时间");
+			int arriveTime=in.nextInt();
+			System.out.println("请输入第"+(int)(n+1)+"进程的服务时间");
+			int serviceTime=in.nextInt();
+			Process p=new Process(arriveTime,serviceTime);
+			queue.add(p);
+		}
+		Vector vector=rr(queue,q);
+		System.out.print(vector.toString());
+	}
+	public static Vector rr(Queue<Process> queue,int q){
+		int time=0;
+		Vector v=new Vector();
+		while(queue.peek()!=null){
+			if(queue.peek().getServiceTime()>0){
+				if(queue.peek().getServiceTime()>q){
+					int num=queue.peek().getServiceTime()-q;
+					time=time+q;
+					Process p=queue.remove();
+					Process tempP=new Process(p.getArriveTime(),num);
+					if(num!=0){
+						queue.add(tempP);
+					}
+					else{
+						v.addElement(time);
+					}
+				}
+				else{
+					time=time+queue.remove().getServiceTime();
+					v.addElement(time);
+				}
+			}
+		}
+		return v;
+	}
+}
+class Process{
+	private int arriveTime;
+	private int serviceTime;
+	public Process(int arriveTime,int serviceTime){
+		this.arriveTime=arriveTime;
+		this.serviceTime=serviceTime;
+	}
+	public int getArriveTime() {
+		return arriveTime;
+	}
+	public void setArriveTime(int arriveTime) {
+		this.arriveTime = arriveTime;
+	}
+	public int getServiceTime() {
+		return serviceTime;
+	}
+	public void setServiceTime(int serviceTime) {
+		this.serviceTime = serviceTime;
+	}
+	
+}
