@@ -1,0 +1,129 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>热血三国_乐都网手游</title>
+<link type="text/css" rel="stylesheet" href="css/layout.css" />
+<link type="text/css" rel="stylesheet" href="css/reset.css" />
+<script type="text/javascript" src="js/jquery.1.4.2-min.js"></script>
+<meta name="viewport" content="width=640;target-densitydpi=device-dpi; minimum-scale=0.5; maximum-scale=2,user-scalable=no"/>
+</head>
+
+<body>
+<div id="header">
+    <div class="icon"> <em><img src="images/icon.png"></em>
+        <h2>无间刀</h2>
+        <p class="xx"></p>
+        <p>网络游戏  74.5MB 153次下载</p>
+    </div>
+    <div id="line"></div>
+</div>
+<div id="main"> 
+    <!-- 图片切換 -->
+    <div class="swipe">
+        <ul id="slider">
+            <li style="display:block"><img width="640" height="340" src="images/1.jpg" alt="" /></li>
+            <li><img width="640" height="340" src="images/2.jpg" alt="" /></li>
+            <li><img width="640" height="340" src="images/3.jpg" alt="" /></li>
+            <li><img width="640" height="340"  src="images/4.jpg" alt="" /></li>
+        </ul>
+        <div id="pagenavi"> <a href="javascript:void(0);" class="active">1</a> <a href="javascript:void(0);">2</a> <a href="javascript:void(0);">3</a> <a href="javascript:void(0);">4</a> </div>
+    </div>
+    <!-- /图片切換 --> 
+    
+    <!-- 游戏简介 -->
+    <div class="box">
+        <h2>【游戏简介】</h2>
+        <div class="boxlist">
+            <div class="boxlisttop"> 1. 布局基本延用客户端界面，稍作修改，去除了顶部导航条、中间的菜单栏及底部猜你喜欢版块
+                
+                2. 顶部区域显示游戏logo，名称，星级，类型，安装包大小，下载次数，这些现在都能通过后台配置有现成数据。顶部游戏名
+                5. 简介下方显示详细信息：更新时间，版本号，客服电话，更新时间和版本号通过后台配置 </div>
+            <div class="boxlistbottom" style="display:none"> 6. 最下方的“下载按钮”固定显示在屏幕底部，不随页面滚动，检测用户是否已安装应用，如未安装显示“下载”，如已安装则根据用户安装的版本是否比我们提供的版本低，对应地显示“更新”或“打开”，下载完成自动引导安装
+                暂停中：顶部下载按钮图标变成继续按钮，按钮下方显示文字“继续”，底部下载按钮显示“继续下载”
+                
+                下载完成未安装：顶部和底部均显示为安装按钮
+                
+                安装完成且版本一致：顶部和底部均显示为打开钮 </div>
+            <div class="boxmore"><a href="javascript:;">展开</a></div>
+        </div>
+    </div>
+    <!-- /游戏简介 --> 
+    
+    <!-- 详细说明 -->
+    <div class="box xq">
+        <h2>【详细说明】</h2>
+        <div class="boxxq">
+            <ul>
+                <li>· 更新：2014-08-08 11:45:19</li>
+                <li>· 版本：1.0.4</li>
+                <li>· 客服电话：0571-89715566</li>
+            </ul>
+        </div>
+    </div>
+    <!-- /详细说明 --> 
+</div>
+<div id="bottom">
+    <div class="downbtn"><a href="javascript:;">下载</a></div>
+</div>
+<script type="text/javascript" src="js/touchScroll.js"></script> 
+<script type="text/javascript" src="js/touchslider.dev.js"></script> 
+<script type="text/javascript">
+//判断是否有小数点
+function hasDot(num) {
+    if (!isNaN(num)) {
+        return ((num + '').indexOf('.') != -1) ? true : false;
+    }
+}
+//星星展示
+var xnum=4.5; //设置星级
+var t=false; //判断是否执行小数点的半颗星
+for (var i=1;i<=5;i++){
+	if(i<=xnum){
+		$('.xx').append('<img src=images/x1.png />')
+	}
+	else{			
+		if (hasDot(xnum) && !t){
+			t=true
+			$('.xx').append('<img src=images/x3.png />')
+		}else(
+			$('.xx').append('<img src=images/x2.png />')
+		)
+	}
+}
+
+//更多内容
+$(function(){
+	$('.boxmore a').click(function(){
+		if($('.boxlistbottom').css('display')==='none'){
+			$('.boxmore a').html('关闭')
+		}else{
+			$('.boxmore a').html('展开')
+		}		
+		$('.boxlistbottom').toggle();
+	});
+})
+
+//图片切换
+var active=0,
+	as=document.getElementById('pagenavi').getElementsByTagName('a');
+	
+for(var i=0;i<as.length;i++){
+	(function(){
+		var j=i;
+		as[i].onclick=function(){
+			t2.slide(j);
+			return false;
+		}
+	})();
+}
+
+var t1=new TouchScroll({id:'wrapper','width':5,'opacity':0.7,color:'#555',minLength:20});
+var t2=new TouchSlider({id:'slider', speed:600, timeout:6000, before:function(index){
+		as[active].className='';
+		active=index;
+		as[active].className='active';
+	}});
+</script>
+</body>
+</html>
